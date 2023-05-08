@@ -18,10 +18,6 @@ import static java.util.Optional.ofNullable;
 public class IUserService implements UserService {
     private final UserDao userDao;
 
-//    private IUserService(UserDao userDao) {
-//        this.userDao = userDao;
-//    }
-
     @Override
     public User getUserById(long userId) {
         return ofNullable(userDao.getById(userId))

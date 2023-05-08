@@ -16,10 +16,6 @@ public class ITicketService implements TicketService {
 
     private final TicketDao ticketDao;
 
-//    public ITicketService(TicketDao ticketDao) {
-//        this.ticketDao = ticketDao;
-//    }
-
     @Override
     public Ticket bookTicket(long id,long userId, long eventId, int place, Ticket.Category category) {
         return ticketDao.bookTicket(id, userId, eventId, place, category);

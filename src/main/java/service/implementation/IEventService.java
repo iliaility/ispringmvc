@@ -18,10 +18,6 @@ import static java.util.Optional.ofNullable;
 public class IEventService implements EventService {
     private final EventDao eventDao;
 
-//    private IEventService(EventDao eventDao) {
-//        this.eventDao = eventDao;
-//    }
-
     public Event getEventById(long id) {
         return ofNullable(eventDao.getById(id))
                 .orElseThrow(() -> new NotFoundException("Event " + id + " not found"));

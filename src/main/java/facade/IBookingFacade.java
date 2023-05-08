@@ -21,12 +21,6 @@ public class IBookingFacade implements BookingFacade {
     private final IEventService eventService;
     private final ITicketService ticketService;
 
-//    public IBookingFacade(IUserService userService, IEventService eventService, ITicketService ticketService) {
-//        this.userService = userService;
-//        this.eventService = eventService;
-//        this.ticketService = ticketService;
-//    }
-
     @Override
     public Event getEventById(long eventId) {
         log.info("Get event by id " + eventId);
