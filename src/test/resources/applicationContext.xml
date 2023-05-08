@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+    <!-- storage -->
+    <bean id="storage" class="storage.BookingStorage">
+        <property name="mapper">
+            <ref bean="objectMapper"/>
+        </property>
+    </bean>
+    <!--custom bean post processor-->
+    <!--use "p" namespace-->
+    <bean id="StorageInitializer" class="util.StorageInitializer"
+          p:userDataPath="${user.data.path}" p:ticketDataPath="${ticket.data.path}" p:eventDataPath="${event.data.path}"
+    />
+    <!-- dao -->
+    <bean id="userDao" class="dao.implementation.IUserDao">
+        <property name="bookingStorage">
+            <ref bean="storage"/>
+        </property>
+    </bean>
+    <bean id="eventDao" class="dao.implementation.IEventDao">
+        <property name="bookingStorage">
+            <ref bean="storage"/>
+        </property>
+    </bean>
+    <bean id="ticketDao" class="dao.implementation.ITicketDao">
+        <property name="bookingStorage">
+            <ref bean="storage"/>
+        </property>
+    </bean>
+    <!-- service -->
+    <bean id="userService" class="service.implementation.IUserService" autowire="byType"/>
+    <bean id="eventService" class="service.implementation.IEventService" autowire="byType"/>
+    <bean id="ticketService" class="service.implementation.ITicketService" autowire="byType"/>
+    <!-- facade -->
+    <bean id="bookingFacade" class="facade.IBookingFacade">
+        <constructor-arg name="eventService" ref="eventService"/>
+        <constructor-arg name="userService" ref="userService"/>
+        <constructor-arg name="ticketService" ref="ticketService"/>
+    </bean>
+
+    <context:property-placeholder location="classpath:application.properties"/>
+</beans>
