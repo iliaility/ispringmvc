@@ -2,8 +2,8 @@ package integration;
 
 import facade.BookingFacade;
 import model.Ticket;
-import model.implementation.IEvent;
-import model.implementation.IUser;
+import model.implementation.EventImpl;
+import model.implementation.UserImpl;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -33,15 +33,15 @@ public class BookTicketsTest {
         BookingFacade bookingFacade = applicationContext.getBean("bookingFacade", BookingFacade.class);
 
         // create test users
-        IUser user1 = new IUser(1, "user1", "user1@gmail.com");
-        IUser user2 = new IUser(2, "user2", "user2@gmail.com");
-        IUser user3 = new IUser(3, "user3", "user3@gmail.com");
+        UserImpl user1 = new UserImpl(1, "user1", "user1@gmail.com");
+        UserImpl user2 = new UserImpl(2, "user2", "user2@gmail.com");
+        UserImpl user3 = new UserImpl(3, "user3", "user3@gmail.com");
         bookingFacade.createUser(user1);
         bookingFacade.createUser(user2);
         bookingFacade.createUser(user3);
 
         // create test event
-        IEvent event = new IEvent(1, "title", new Date());
+        EventImpl event = new EventImpl(1, "title", new Date());
         bookingFacade.createEvent(event);
 
         // book tickets for test users and event

@@ -4,7 +4,7 @@ import dao.UserDao;
 import exception.NotFoundException;
 import lombok.Setter;
 import model.User;
-import model.implementation.IUser;
+import model.implementation.UserImpl;
 import storage.BookingStorage;
 
 import java.util.ArrayList;
@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Setter
-public class IUserDao implements UserDao {
+public class UserDaoImpl implements UserDao {
     private BookingStorage bookingStorage;
 
-    private List<IUser> getUsersData() {
-        return (List<IUser>) bookingStorage.getData(IUser.class);
+    private List<UserImpl> getUsersData() {
+        return (List<UserImpl>) bookingStorage.getData(UserImpl.class);
     }
 
     @Override

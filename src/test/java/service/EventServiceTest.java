@@ -3,8 +3,8 @@ package service;
 import dao.EventDao;
 import exception.NotFoundException;
 import model.Event;
-import model.implementation.IEvent;
-import service.implementation.IEventService;
+import model.implementation.EventImpl;
+import service.implementation.EventServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,11 +28,11 @@ class EventServiceTest {
     private EventDao eventDao;
 
     @InjectMocks
-    private IEventService eventService;
+    private EventServiceImpl eventService;
 
     @Test
     void getByIdTest() {
-        Event expected = new IEvent(1, "Event 1", new Date());
+        Event expected = new EventImpl(1, "Event 1", new Date());
         doReturn(expected).when(eventDao).getById(1L);
         Event actual = eventDao.getById(1);
         assertEquals(expected, actual);
@@ -48,7 +48,7 @@ class EventServiceTest {
     @Test
     void getEventsByTitleTest() {
         String title = "title";
-        Event expected = new IEvent(1, title, new Date());
+        Event expected = new EventImpl(1, title, new Date());
         doReturn(singletonList(expected)).when(eventDao).getEventsByTitle(title, 1, 1);
         List<Event> actualEvents = eventService.getEventsByTitle(title, 1, 1);
         assertEquals(1, actualEvents.size());
@@ -65,7 +65,7 @@ class EventServiceTest {
     @Test
     void getEventsByDayTest() {
         Date date = new Date();
-        Event expected = new IEvent(1, "title", date);
+        Event expected = new EventImpl(1, "title", date);
         doReturn(singletonList(expected)).when(eventDao).getEventsByDay(date, 1, 1);
         List<Event> actualEvents = eventService.getEventsByDay(date, 1, 1);
         assertEquals(1, actualEvents.size());
@@ -88,7 +88,7 @@ class EventServiceTest {
 
     @Test
     void createEventTest() {
-        Event expected = new IEvent(1, "Event 1", new Date());
+        Event expected = new EventImpl(1, "Event 1", new Date());
         doReturn(expected).when(eventDao).create(expected);
         Event actual = eventService.createEvent(expected);
         assertEquals(expected, actual);
@@ -102,7 +102,7 @@ class EventServiceTest {
 
     @Test
     void updateEventTest() {
-        Event expected = new IEvent(1, "title", new Date());
+        Event expected = new EventImpl(1, "title", new Date());
         doReturn(expected).when(eventDao).update(expected);
         Event actual = eventService.updateEvent(expected);
         assertEquals(expected, actual);

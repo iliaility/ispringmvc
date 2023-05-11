@@ -15,7 +15,7 @@ import static java.util.Optional.ofNullable;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class IUserService implements UserService {
+public class UserServiceImpl implements UserService {
     private final UserDao userDao;
 
     @Override

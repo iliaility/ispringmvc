@@ -6,9 +6,9 @@ import model.Event;
 import model.Ticket;
 import model.User;
 import org.springframework.stereotype.Component;
-import service.implementation.IEventService;
-import service.implementation.ITicketService;
-import service.implementation.IUserService;
+import service.implementation.EventServiceImpl;
+import service.implementation.TicketServiceImpl;
+import service.implementation.UserServiceImpl;
 
 import java.util.Date;
 import java.util.List;
@@ -16,10 +16,10 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class IBookingFacade implements BookingFacade {
-    private final IUserService userService;
-    private final IEventService eventService;
-    private final ITicketService ticketService;
+public class BookingFacadeImpl implements BookingFacade {
+    private final UserServiceImpl userService;
+    private final EventServiceImpl eventService;
+    private final TicketServiceImpl ticketService;
 
     @Override
     public Event getEventById(long eventId) {

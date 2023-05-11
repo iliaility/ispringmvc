@@ -5,7 +5,7 @@ import lombok.Setter;
 import model.Event;
 import model.Ticket;
 import model.User;
-import model.implementation.ITicket;
+import model.implementation.TicketImpl;
 import storage.BookingStorage;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Setter
-public class ITicketDao implements TicketDao {
+public class TicketDaoImpl implements TicketDao {
     private BookingStorage bookingStorage;
 
     @Override
@@ -25,7 +25,7 @@ public class ITicketDao implements TicketDao {
         }
         Map<Long, Ticket> tickets = bookingStorage.getTickets();
         long ticketId = tickets.size() + 1;
-        Ticket ticket = new ITicket(id, userId, eventId, place, category);
+        Ticket ticket = new TicketImpl(id, userId, eventId, place, category);
         ticket.setId(ticketId);
         tickets.put(ticketId, ticket);
         return ticket;

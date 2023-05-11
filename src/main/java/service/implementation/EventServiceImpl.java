@@ -15,7 +15,7 @@ import static java.util.Optional.ofNullable;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class IEventService implements EventService {
+public class EventServiceImpl implements EventService {
     private final EventDao eventDao;
 
     public Event getEventById(long id) {

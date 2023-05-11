@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Setter
-public class IEventDao implements EventDao {
+public class EventDaoImp implements EventDao {
     private BookingStorage bookingStorage;
 
     @Override

@@ -4,15 +4,15 @@ import model.Event;
 
 import java.util.Date;
 
-public class IEvent implements Event {
+public class EventImpl implements Event {
     private long id;
     private String title;
     private Date date;
 
-    public IEvent() {
+    public EventImpl() {
     }
 
-    public IEvent(long id, String title, Date date) {
+    public EventImpl(long id, String title, Date date) {
         this.id = id;
         this.title = title;
         this.date = date;

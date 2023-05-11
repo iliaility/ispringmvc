@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ITicketService implements TicketService {
+public class TicketServiceImpl implements TicketService {
 
     private final TicketDao ticketDao;
 

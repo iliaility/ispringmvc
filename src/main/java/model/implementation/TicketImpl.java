@@ -2,7 +2,7 @@ package model.implementation;
 
 import model.Ticket;
 
-public class ITicket implements Ticket {
+public class TicketImpl implements Ticket {
 
     private long id;
     private long userId;
@@ -10,10 +10,10 @@ public class ITicket implements Ticket {
     private int place;
     private Category category;
 
-    public ITicket() {
+    public TicketImpl() {
     }
 
-    public ITicket(long id, long userId, long eventId, int place, Category category) {
+    public TicketImpl(long id, long userId, long eventId, int place, Category category) {
         this.id = id;
         this.userId = userId;
         this.eventId = eventId;

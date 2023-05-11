@@ -6,9 +6,9 @@ import lombok.Setter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
-import model.implementation.IUser;
-import model.implementation.ITicket;
-import model.implementation.IEvent;
+import model.implementation.UserImpl;
+import model.implementation.TicketImpl;
+import model.implementation.EventImpl;
 import storage.BookingStorage;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +25,9 @@ public class StorageInitializer implements BeanPostProcessor {
         log.info("Execute postProcessBeforeInitialization for bean {}", beanName);
         if (bean instanceof BookingStorage bookingStorage) {
             try {
-                bookingStorage.loadData(IUser.class, userDataPath);
-                bookingStorage.loadData(ITicket.class, ticketDataPath);
-                bookingStorage.loadData(IEvent.class, eventDataPath);
+                bookingStorage.loadData(UserImpl.class, userDataPath);
+                bookingStorage.loadData(TicketImpl.class, ticketDataPath);
+                bookingStorage.loadData(EventImpl.class, eventDataPath);
             } catch (IOException e) {
                 throw new RuntimeException("Error in bean post processor");
             }
