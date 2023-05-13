@@ -9,6 +9,7 @@ import storage.BookingStorage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Setter
@@ -33,8 +34,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User create(User obj) {
-        return bookingStorage.getUsers().put(obj.getId(), obj);
+    public User create(User user) {
+        user.setId(bookingStorage.getNextId(User.class));
+        bookingStorage.getUsers().put(user.getId(), user);
+        return bookingStorage.getUsers().get(user.getId());
     }
 
     @Override
@@ -52,7 +55,7 @@ public class UserDaoImpl implements UserDao {
     public List<User> getUsersByEmail(String email, int pageSize, int pageNum) {
         List<User> users = new ArrayList<>(bookingStorage.getUsers().values());
         List<User> filteredUsers = users.stream()
-                .filter(user -> user.getEmail().equals(email))
+                .filter(user -> Objects.equals(user.getEmail(), email))
                 .skip((pageNum - 1) * pageSize)
                 .limit(pageSize)
                 .collect(Collectors.toList());
@@ -67,9 +70,13 @@ public class UserDaoImpl implements UserDao {
     public List<User> getUsersByName(String name, int pageSize, int pageNum) {
         List<User> users = new ArrayList<>(bookingStorage.getUsers().values());
         return users.stream()
-                .filter(user -> user.getEmail().equals(name))
+                .filter(user -> Objects.equals(user.getName(), name))
                 .skip((pageNum - 1) * pageSize)
                 .limit(pageSize)
                 .collect(Collectors.toList());
+    }
+
+    public void setBookingStorage(BookingStorage bookingStorage) {
+        this.bookingStorage = bookingStorage;
     }
 }

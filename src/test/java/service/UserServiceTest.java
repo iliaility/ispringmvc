@@ -29,7 +29,7 @@ class UserServiceTest {
     @Test
     void getUserByIdTest() {
         long userId = 1;
-        User expected = new UserImpl(userId, "user1", "user1@gmail.com");
+        User expected = new UserImpl("user1", "user1@gmail.com");
         doReturn(expected).when(userDao).getById(userId);
         User actual = userService.getUserById(userId);
         assertEquals(expected, actual);
@@ -45,7 +45,7 @@ class UserServiceTest {
     @Test
     void getUsersByEmailTest() {
         String email = "user1@gmail.com";
-        User expected = new UserImpl(1, "user1", email);
+        User expected = new UserImpl("user1", email);
         doReturn(singletonList(expected)).when(userDao).getUsersByEmail(email, 1, 1);
         List<User> actualUsers = userService.getUsersByEmail(email, 1, 1);
         assertEquals(1, actualUsers.size());
@@ -62,7 +62,7 @@ class UserServiceTest {
     @Test
     void getUsersByNameTest() {
         String name = "user1";
-        User expected = new UserImpl(1, name, "user1@gmail.com");
+        User expected = new UserImpl(name, "user1@gmail.com");
         doReturn(singletonList(expected)).when(userDao).getUsersByName(name, 1, 1);
         List<User> actualUsers = userService.getUsersByName(name, 1, 1);
         assertEquals(1, actualUsers.size());
@@ -78,7 +78,7 @@ class UserServiceTest {
 
     @Test
     void createUserTest() {
-        User expected = new UserImpl(1, "user1", "user1@gmail.com");
+        User expected = new UserImpl("user1", "user1@gmail.com");
         doReturn(expected).when(userDao).create(expected);
         User actual = userService.createUser(expected);
         assertEquals(expected, actual);
@@ -93,7 +93,7 @@ class UserServiceTest {
 
     @Test
     void updateUserTest() {
-        User expected = new UserImpl(1, "user", "user@gmail.com");
+        User expected = new UserImpl("user", "user@gmail.com");
         doReturn(expected).when(userDao).update(expected);
         User actual = userService.updateUser(expected);
         assertEquals(expected, actual);

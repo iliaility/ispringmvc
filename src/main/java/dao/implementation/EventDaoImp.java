@@ -8,6 +8,7 @@ import storage.BookingStorage;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Setter
@@ -25,8 +26,10 @@ public class EventDaoImp implements EventDao {
     }
 
     @Override
-    public Event create(Event obj) {
-        return bookingStorage.getEvents().put(obj.getId(), obj);
+    public Event create(Event event) {
+        event.setId(bookingStorage.getNextId(Event.class));
+        bookingStorage.getEvents().put(event.getId(), event);
+        return bookingStorage.getEvents().get(event.getId());
     }
 
     @Override
@@ -43,7 +46,7 @@ public class EventDaoImp implements EventDao {
     public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {
         List<Event> events = new ArrayList<>(bookingStorage.getEvents().values());
         return events.stream()
-                .filter(event -> event.getTitle().equals(title))
+                .filter(event -> Objects.equals(event.getTitle(), title))
                 .skip((pageNum - 1) * pageSize)
                 .limit(pageSize)
                 .collect(Collectors.toList());
@@ -53,9 +56,13 @@ public class EventDaoImp implements EventDao {
     public List<Event> getEventsByDay(Date day, int pageSize, int pageNum) {
         List<Event> events = new ArrayList<>(bookingStorage.getEvents().values());
         return events.stream()
-                .filter(event -> event.getDate().equals(day))
+                .filter(event -> Objects.equals(event.getDate(), day))
                 .skip((pageNum - 1) * pageSize)
                 .limit(pageSize)
                 .collect(Collectors.toList());
+    }
+
+    public void setBookingStorage(BookingStorage bookingStorage) {
+        this.bookingStorage = bookingStorage;
     }
 }

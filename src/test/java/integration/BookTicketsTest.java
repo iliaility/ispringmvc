@@ -1,6 +1,6 @@
 package integration;
 
-import facade.BookingFacade;
+import facade.BookingFacadeImpl;
 import model.Ticket;
 import model.implementation.EventImpl;
 import model.implementation.UserImpl;
@@ -11,11 +11,12 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import config.ApplicationConfig;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,24 +25,22 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource("classpath:application.properties")
 public class BookTicketsTest {
 
-    @Autowired
-    private ApplicationContext applicationContext;
+    ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+    BookingFacadeImpl bookingFacade = context.getBean("bookingFacade", BookingFacadeImpl.class);
 
     @Test
     public void testIntegrationScenario() {
 
-        BookingFacade bookingFacade = applicationContext.getBean("bookingFacade", BookingFacade.class);
-
         // create test users
-        UserImpl user1 = new UserImpl(1, "user1", "user1@gmail.com");
-        UserImpl user2 = new UserImpl(2, "user2", "user2@gmail.com");
-        UserImpl user3 = new UserImpl(3, "user3", "user3@gmail.com");
+        UserImpl user1 = new UserImpl("user1", "user1@gmail.com");
+        UserImpl user2 = new UserImpl("user2", "user2@gmail.com");
+        UserImpl user3 = new UserImpl("user3", "user3@gmail.com");
         bookingFacade.createUser(user1);
         bookingFacade.createUser(user2);
         bookingFacade.createUser(user3);
 
         // create test event
-        EventImpl event = new EventImpl(1, "title", new Date());
+        EventImpl event = new EventImpl( "title", new Date());
         bookingFacade.createEvent(event);
 
         // book tickets for test users and event

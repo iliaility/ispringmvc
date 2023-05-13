@@ -63,4 +63,25 @@ public class BookingStorage {
     public List<? extends Base> getData(Class<? extends Base> clazz) {
         return storage.get(clazz.getSimpleName());
     }
+
+    public long getNextId(Class<? extends Base> clazz) {
+        if (clazz.equals(User.class)) {
+            return users.keySet().stream()
+                    .mapToLong(Long::valueOf)
+                    .max()
+                    .orElse(0L) + 1L;
+        } else if (clazz.equals(Event.class)) {
+            return events.keySet().stream()
+                    .mapToLong(Long::valueOf)
+                    .max()
+                    .orElse(0L) + 1L;
+        } else if (clazz.equals(Ticket.class)) {
+            return tickets.keySet().stream()
+                    .mapToLong(Long::valueOf)
+                    .max()
+                    .orElse(0L) + 1L;
+        } else {
+            throw new IllegalArgumentException("Unsupported class type for generating ID");
+        }
+    }
 }

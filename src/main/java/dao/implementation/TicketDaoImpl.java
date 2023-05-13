@@ -24,8 +24,8 @@ public class TicketDaoImpl implements TicketDao {
             return null;
         }
         Map<Long, Ticket> tickets = bookingStorage.getTickets();
-        long ticketId = tickets.size() + 1;
-        Ticket ticket = new TicketImpl(id, userId, eventId, place, category);
+        long ticketId = bookingStorage.getNextId(Ticket.class);
+        Ticket ticket = new TicketImpl(userId, eventId, place, category);
         ticket.setId(ticketId);
         tickets.put(ticketId, ticket);
         return ticket;
@@ -61,5 +61,9 @@ public class TicketDaoImpl implements TicketDao {
             return true;
         }
         return false;
+    }
+
+    public void setBookingStorage(BookingStorage bookingStorage) {
+        this.bookingStorage = bookingStorage;
     }
 }

@@ -33,7 +33,7 @@ class TicketServiceTest {
 
     @Test
     void bookTicketTest() {
-        Ticket expected = new TicketImpl(1, 1, 1, 10, Ticket.Category.STANDARD);
+        Ticket expected = new TicketImpl(1, 1, 10, Ticket.Category.STANDARD);
         when(ticketDao.bookTicket(1, 1, 1, 10, Ticket.Category.STANDARD)).thenReturn(expected);
         Ticket actual = ticketService.bookTicket(1, 1, 1, 10, Ticket.Category.STANDARD);
         assertEquals(expected, actual);
@@ -47,8 +47,8 @@ class TicketServiceTest {
 
     @Test
     void getBookedTicketsByUserTest() {
-        Ticket expected = new TicketImpl(1, 1, 1, 10, Ticket.Category.STANDARD);
-        UserImpl user = new UserImpl(1, "user", "user@gmail.com");
+        Ticket expected = new TicketImpl(1, 1, 10, Ticket.Category.STANDARD);
+        UserImpl user = new UserImpl("user", "user@gmail.com");
         doReturn(singletonList(expected)).when(ticketDao).getBookedTicketsByUser(user, 1, 1);
         List<Ticket> actualTickets = ticketService.getBookedTicketsByUser(user, 1, 1);
         assertEquals(1, actualTickets.size());
@@ -57,8 +57,8 @@ class TicketServiceTest {
 
     @Test
     void getBookedTicketsByEventTest() {
-        Ticket expected = new TicketImpl(1, 1, 1, 10, Ticket.Category.STANDARD);
-        EventImpl event = new EventImpl(1, "event", new Date());
+        Ticket expected = new TicketImpl(1, 1, 10, Ticket.Category.STANDARD);
+        EventImpl event = new EventImpl("event", new Date());
         doReturn(singletonList(expected)).when(ticketDao).getBookedTicketsByEvent(event, 1, 1);
         List<Ticket> actualTickets = ticketService.getBookedTicketsByEvent(event, 1, 1);
         assertEquals(1, actualTickets.size());

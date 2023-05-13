@@ -31,7 +31,6 @@ public class EventServiceImpl implements EventService {
         return eventDao.getEventsByDay(day, pageSize, pageNum);
     }
 
-
     public Event createEvent(Event event) {
         return eventDao.create(event);
     }

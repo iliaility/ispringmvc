@@ -16,6 +16,7 @@ import static java.util.Optional.ofNullable;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserDao userDao;
 
     @Override

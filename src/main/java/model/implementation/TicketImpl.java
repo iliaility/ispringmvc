@@ -13,8 +13,7 @@ public class TicketImpl implements Ticket {
     public TicketImpl() {
     }
 
-    public TicketImpl(long id, long userId, long eventId, int place, Category category) {
-        this.id = id;
+    public TicketImpl(long userId, long eventId, int place, Category category) {
         this.userId = userId;
         this.eventId = eventId;
         this.place = place;
