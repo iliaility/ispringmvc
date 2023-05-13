@@ -15,6 +15,7 @@ import storage.BookingStorage;
 
 @Configuration
 public class ApplicationConfig {
+
     @Autowired
     private BookingStorage bookingStorage;
 
@@ -44,11 +45,13 @@ public class ApplicationConfig {
         UserServiceImpl userService = new UserServiceImpl(userDao());
         return userService;
     }
+
     @Bean
     public EventServiceImpl eventService() {
         EventServiceImpl eventService = new EventServiceImpl(eventDao());
         return eventService;
     }
+
     @Bean
     public TicketServiceImpl ticketService() {
         TicketServiceImpl ticketService = new TicketServiceImpl(ticketDao());
@@ -59,8 +62,9 @@ public class ApplicationConfig {
     public BookingStorage bookingStorage() {
         return new BookingStorage();
     }
+
     @Bean
     public BookingFacade bookingFacade() {
-        return new BookingFacadeImpl(userService(),eventService(), ticketService());
+        return new BookingFacadeImpl(userService(), eventService(), ticketService());
     }
 }
