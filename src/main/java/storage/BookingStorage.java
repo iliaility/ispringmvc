@@ -15,20 +15,16 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 
 @Slf4j
 @Setter
 public class BookingStorage {
     private ObjectMapper mapper;
-
-    private final ConcurrentHashMap<String, List<? extends Base>> storage = new ConcurrentHashMap<>();
-
     private Map<Long, User> users = new HashMap<>();
     private Map<Long, Event> events = new HashMap<>();
     private Map<Long, Ticket> tickets = new HashMap<>();
@@ -49,19 +45,34 @@ public class BookingStorage {
         log.info("Received path for test data: {}", path);
         Resource resource = new ClassPathResource(path);
         List<String> lines = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8);
-        List<Base> data = lines.stream().map(line -> {
+        lines.forEach(line -> {
             try {
-                return mapper.readValue(line, clazz);
+                Base base = mapper.readValue(line, clazz);
+                if (base instanceof User) {
+                    users.put(base.getId(), (User) base);
+                } else if (base instanceof Event) {
+                    events.put(base.getId(), (Event) base);
+                } else if (base instanceof Ticket) {
+                    tickets.put(base.getId(), (Ticket) base);
+                }
             } catch (JsonProcessingException e) {
                 throw new JsonParsingException("Error while parsing JSON data", e);
             }
-        }).collect(Collectors.toList());
-        storage.put(clazz.getSimpleName(), data);
+        });
+
         log.info("Data was read successfully!");
     }
 
     public List<? extends Base> getData(Class<? extends Base> clazz) {
-        return storage.get(clazz.getSimpleName());
+        if (clazz.equals(User.class)) {
+            return new ArrayList<>(users.values());
+        } else if (clazz.equals(Event.class)) {
+            return new ArrayList<>(events.values());
+        } else if (clazz.equals(Ticket.class)) {
+            return new ArrayList<>(tickets.values());
+        } else {
+            throw new IllegalArgumentException("Unsupported class type for retrieving data");
+        }
     }
 
     public long getNextId(Class<? extends Base> clazz) {
