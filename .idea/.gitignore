@@ -1,0 +1,18 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+logs.log
+.idea
+/target/classes
+/target/generated-sources
+/target/generated-test-sources
+/target/maven-status
+/target/surefire-reports
+/target/test-classes
+vcs.xml
+compiler.xml
+encodings.xml
+jarRepositories.xml
+misc.xml
+mp_java-global.iml
+uiDesigner.xml
