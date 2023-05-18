@@ -8,37 +8,37 @@
 
     <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 
-    <bean id="storage" class="storage.BookingStorage">
+    <bean id="com.epam.springmvc.storage" class="com.epam.springmvc.storage.BookingStorage">
         <property name="mapper">
             <ref bean="objectMapper"/>
         </property>
     </bean>
 
-    <bean id="StorageInitializer" class="util.StorageInitializer"
+    <bean id="StorageInitializer" class="com.epam.springmvc.util.StorageInitializer"
           p:userDataPath="${user.data.path}" p:ticketDataPath="${ticket.data.path}" p:eventDataPath="${event.data.path}"
     />
 
-    <bean id="userDao" class="dao.implementation.UserDaoImpl">
+    <bean id="userDao" class="com.epam.springmvc.dao.implementation.UserDaoImpl">
         <property name="bookingStorage">
-            <ref bean="storage"/>
+            <ref bean="com.epam.springmvc.storage"/>
         </property>
     </bean>
-    <bean id="eventDao" class="dao.implementation.EventDaoImp">
+    <bean id="eventDao" class="com.epam.springmvc.dao.implementation.EventDaoImp">
         <property name="bookingStorage">
-            <ref bean="storage"/>
+            <ref bean="com.epam.springmvc.storage"/>
         </property>
     </bean>
-    <bean id="ticketDao" class="dao.implementation.TicketDaoImpl">
+    <bean id="ticketDao" class="com.epam.springmvc.dao.implementation.TicketDaoImpl">
         <property name="bookingStorage">
-            <ref bean="storage"/>
+            <ref bean="com.epam.springmvc.storage"/>
         </property>
     </bean>
 
-    <bean id="userService" class="service.implementation.UserServiceImpl" autowire="byType"/>
-    <bean id="eventService" class="service.implementation.EventServiceImpl" autowire="byType"/>
-    <bean id="ticketService" class="service.implementation.TicketServiceImpl" autowire="byType"/>
+    <bean id="userService" class="com.epam.springmvc.service.implementation.UserServiceImpl" autowire="byType"/>
+    <bean id="eventService" class="com.epam.springmvc.service.implementation.EventServiceImpl" autowire="byType"/>
+    <bean id="ticketService" class="com.epam.springmvc.service.implementation.TicketServiceImpl" autowire="byType"/>
 
-    <bean id="bookingFacade" class="facade.BookingFacadeImpl">
+    <bean id="bookingFacade" class="com.epam.springmvc.facade.BookingFacadeImpl">
         <constructor-arg name="eventService" ref="eventService"/>
         <constructor-arg name="userService" ref="userService"/>
         <constructor-arg name="ticketService" ref="ticketService"/>
