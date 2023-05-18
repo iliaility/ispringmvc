@@ -12,7 +12,7 @@ public class UserImpl implements User {
     }
 
     public UserImpl(long id,String name, String email) {
-        this.id=id;
+        this.id = id;
         this.name = name;
         this.email = email;
     }

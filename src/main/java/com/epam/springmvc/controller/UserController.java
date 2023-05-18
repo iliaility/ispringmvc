@@ -49,9 +49,35 @@ public class UserController {
     }
 
     @GetMapping("/create")
-    public String showCreateUserForm(Model model) {
-        User user = new UserImpl(10, "user1", "user1@gmail.com");
+    public String createUser(Model model) {
+        User user = new UserImpl();
+        user.setName("name");
+        user.setEmail("email");
         bookingFacade.createUser(user);
-        return "create-user";
+        model.addAttribute("users", user);
+        return "users-list";
+    }
+
+    @GetMapping("/update/{userId}")
+    public String updateUser(@PathVariable("userId") long userId, Model model) {
+        User user = bookingFacade.getUserById(userId);
+        if (user != null) {
+            user.setName("updatedName");
+            user.setEmail("updated-email@gmail.com");
+            bookingFacade.updateUser(user);
+        }
+        model.addAttribute("users", user);
+        return "users-list";
+    }
+
+    @GetMapping("/delete/{userId}")
+    public String deleteUser(@PathVariable("userId") long userId, Model model) {
+        boolean deleted = bookingFacade.deleteUser(userId);
+        if (deleted) {
+            model.addAttribute("message", "User deleted successfully");
+        } else {
+            model.addAttribute("message", "User not found");
+        }
+        return "users-list";
     }
 }

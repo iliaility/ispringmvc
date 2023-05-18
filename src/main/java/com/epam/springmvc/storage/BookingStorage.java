@@ -1,6 +1,7 @@
 package com.epam.springmvc.storage;
 
 import com.epam.springmvc.model.implementation.UserImpl;
+import com.epam.springmvc.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.epam.springmvc.exception.JsonParsingException;
@@ -19,10 +20,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-
 @Slf4j
 @Setter
 public class BookingStorage {
+
     private ObjectMapper mapper;
     private Map<Long, User> users = new HashMap<>();
     private Map<Long, Event> events = new HashMap<>();
@@ -58,22 +59,14 @@ public class BookingStorage {
                 throw new JsonParsingException("Error while parsing JSON data", e);
             }
         });
-
         log.info("Data was read successfully!");
     }
 
     public List<? extends Base> getData(Class<? extends Base> clazz) {
         if (clazz.equals(UserImpl.class)) {
-//            User user1 = new UserImpl(getNextId(User.class), "user1", "user1@gmail.com");
-//            User user2 = new UserImpl(getNextId(User.class), "user2", "user2@gmail.com");
-            User user1 = new UserImpl(1, "user1", "user1@gmail.com");
-            User user2 = new UserImpl(2, "user2", "user2@gmail.com");
-            users.put(user1.getId(), user1);
-            users.put(user2.getId(), user2);
-            System.out.println(user1);
-            System.out.println(user2);
-
-            return new ArrayList<>(users.values());
+            UserRepository userRepository = new UserRepository();
+            List<User> users = userRepository.getAllUsers();
+            return users;
         } else if (clazz.equals(Event.class)) {
             return new ArrayList<>(events.values());
         } else if (clazz.equals(Ticket.class)) {

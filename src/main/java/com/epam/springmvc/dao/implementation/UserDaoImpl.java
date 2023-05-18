@@ -43,14 +43,27 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User update(User obj) {
-        return bookingStorage.getUsers().replace(obj.getId(), obj);
+    public User update(User user) {
+        List<UserImpl> users = getUsersData();
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getId() == user.getId()) {
+                users.set(i, (UserImpl) user);
+                return user;
+            }
+        }
+        throw new NotFoundException("User not found");
     }
 
     @Override
     public boolean deleteById(long id) {
-        bookingStorage.getUsers().remove(id);
-        return true;
+        List<UserImpl> users = getUsersData();
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getId() == id) {
+                users.remove(i);
+                return true;
+            }
+        }
+        throw new NotFoundException("User not found");
     }
 
     @Override
@@ -61,18 +74,17 @@ public class UserDaoImpl implements UserDao {
                 .limit(pageSize)
                 .collect(Collectors.toList());
         if (filteredUsers.isEmpty()) {
-            throw new NotFoundException("User with email " + email +" doesn't exist");
+            throw new NotFoundException("User with email " + email + " doesn't exist");
         }
         return filteredUsers;
     }
-
 
     @Override
     public List<User> getUsersByName(String name, int pageSize, int pageNum) {
         List<User> filteredUsers = getUsersData().stream()
                 .filter(user -> Objects.equals(user.getName(), name))
-                  .skip((pageNum - 1) * pageSize)
-                   .limit(pageSize)
+                .skip((pageNum - 1) * pageSize)
+                .limit(pageSize)
                 .collect(Collectors.toList());
         if (filteredUsers.isEmpty()) {
             throw new NotFoundException("User with name  " + name + " doesn't exist");
