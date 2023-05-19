@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Events List</title>
+</head>
+<body>
+<h1>Events List</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Date</th>
+    </tr>
+
+    <tr th:each="event : ${events}">
+        <td th:text="${event.id}"></td>
+        <td th:text="${event.title}"></td>
+        <td th:text="${event.date}"></td>
+
+    </tr>
+</table>
+</body>
+</html>

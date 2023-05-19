@@ -1,6 +1,8 @@
 package com.epam.springmvc.storage;
 
+import com.epam.springmvc.model.implementation.EventImpl;
 import com.epam.springmvc.model.implementation.UserImpl;
+import com.epam.springmvc.repository.EventRepository;
 import com.epam.springmvc.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -67,8 +69,9 @@ public class BookingStorage {
             UserRepository userRepository = new UserRepository();
             List<User> users = userRepository.getAllUsers();
             return users;
-        } else if (clazz.equals(Event.class)) {
-            return new ArrayList<>(events.values());
+        } else if (clazz.equals(EventImpl.class)) {EventRepository eventRepository = new EventRepository();
+            List<Event> events = eventRepository.getAllEvents();
+            return events;
         } else if (clazz.equals(Ticket.class)) {
             return new ArrayList<>(tickets.values());
         } else {

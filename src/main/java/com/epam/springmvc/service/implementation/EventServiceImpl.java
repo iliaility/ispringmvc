@@ -20,7 +20,7 @@ public class EventServiceImpl implements EventService {
 
     public Event getEventById(long id) {
         return ofNullable(eventDao.getById(id))
-                .orElseThrow(() -> new NotFoundException("Event " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("Event with id " + id + " not found"));
     }
 
     public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {

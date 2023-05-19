@@ -1,5 +1,5 @@
 <html>
 <body>
-<h2>Hello Worlddddddd!</h2>
+<h2>Spring MVC</h2>
 </body>
 </html>

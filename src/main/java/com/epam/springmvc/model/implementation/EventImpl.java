@@ -13,6 +13,7 @@ public class EventImpl implements Event {
     }
 
     public EventImpl( String title, Date date) {
+        this.id = id;
         this.title = title;
         this.date = date;
     }

@@ -17,7 +17,7 @@ public class EventRepository {
     private final String filePath = "data/events.txt";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public List<Event> getAllUsers() {
+    public List<Event> getAllEvents() {
         List<Event> events = new ArrayList<>();
 
         try {

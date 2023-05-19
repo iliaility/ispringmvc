@@ -1,6 +1,8 @@
 package com.epam.springmvc.dao.implementation;
 
 import com.epam.springmvc.dao.EventDao;
+import com.epam.springmvc.exception.NotFoundException;
+import com.epam.springmvc.model.implementation.EventImpl;
 import lombok.Setter;
 import com.epam.springmvc.model.Event;
 import com.epam.springmvc.storage.BookingStorage;
@@ -13,16 +15,24 @@ import java.util.stream.Collectors;
 
 @Setter
 public class EventDaoImp implements EventDao {
+
     private BookingStorage bookingStorage;
 
-    @Override
-    public Event getById(long id) {
-        return bookingStorage.getEvents().get(id);
+    private List<EventImpl> getEventsData() {
+        return (List<EventImpl>) bookingStorage.getData(EventImpl.class);
     }
 
     @Override
     public List<Event> readAll() {
         return new ArrayList<>(bookingStorage.getEvents().values());
+    }
+
+    @Override
+    public Event getById(long id) {
+        return getEventsData().stream()
+                .filter(event -> Objects.equals(event.getId(), id))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -33,33 +43,52 @@ public class EventDaoImp implements EventDao {
     }
 
     @Override
-    public Event update(Event obj) {
-        return bookingStorage.getEvents().replace(obj.getId(), obj);
+    public Event update(Event event) {
+        List<EventImpl> events = getEventsData();
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i).getId() == event.getId()) {
+                events.set(i, (EventImpl) event);
+                return event;
+            }
+        }
+        throw new NotFoundException("Event not found");
     }
 
     @Override
     public boolean deleteById(long id) {
-        bookingStorage.getEvents().remove(id);
-        return true;
+        List<EventImpl> events = getEventsData();
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i).getId() == id) {
+                events.remove(i);
+                return true;
+            }
+        }
+        throw new NotFoundException("User not found");
     }
 
     public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {
-        List<Event> events = new ArrayList<>(bookingStorage.getEvents().values());
-        return events.stream()
+        List<Event> filteredEvents = getEventsData().stream()
                 .filter(event -> Objects.equals(event.getTitle(), title))
                 .skip((pageNum - 1) * pageSize)
                 .limit(pageSize)
                 .collect(Collectors.toList());
+        if (filteredEvents.isEmpty()) {
+            throw new NotFoundException("Event with title " + title + " doesn't exist");
+        }
+        return filteredEvents;
     }
 
     @Override
     public List<Event> getEventsByDay(Date day, int pageSize, int pageNum) {
-        List<Event> events = new ArrayList<>(bookingStorage.getEvents().values());
-        return events.stream()
+        List<Event> filteredEvents = getEventsData().stream()
                 .filter(event -> Objects.equals(event.getDate(), day))
                 .skip((pageNum - 1) * pageSize)
                 .limit(pageSize)
                 .collect(Collectors.toList());
+        if (filteredEvents.isEmpty()) {
+            throw new NotFoundException("Event with date " + day + " doesn't exist");
+        }
+        return filteredEvents;
     }
 
     public void setBookingStorage(BookingStorage bookingStorage) {
