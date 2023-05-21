@@ -4,6 +4,7 @@ import com.epam.springmvc.model.Event;
 import com.epam.springmvc.model.Ticket;
 import com.epam.springmvc.model.User;
 
+import java.io.ByteArrayInputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,18 @@ import java.util.List;
  * Created by maksym_govorischev.
  */
 public interface BookingFacade {
+
+    /**
+     * Populate tickets storage based on predefined file
+     */
+    boolean preloadTickets();
+
+    /**
+     * Generate pdf tickets report for user
+     *
+     * @return pdf report
+     */
+    ByteArrayInputStream generatePdfTicketsReport(Long userId);
 
     /**
      * Gets event by its id.

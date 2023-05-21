@@ -1,8 +1,10 @@
 package com.epam.springmvc.storage;
 
 import com.epam.springmvc.model.implementation.EventImpl;
+import com.epam.springmvc.model.implementation.TicketImpl;
 import com.epam.springmvc.model.implementation.UserImpl;
 import com.epam.springmvc.repository.EventRepository;
+import com.epam.springmvc.repository.TicketRepository;
 import com.epam.springmvc.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -69,11 +71,14 @@ public class BookingStorage {
             UserRepository userRepository = new UserRepository();
             List<User> users = userRepository.getAllUsers();
             return users;
-        } else if (clazz.equals(EventImpl.class)) {EventRepository eventRepository = new EventRepository();
+        } else if (clazz.equals(EventImpl.class)) {
+            EventRepository eventRepository = new EventRepository();
             List<Event> events = eventRepository.getAllEvents();
             return events;
-        } else if (clazz.equals(Ticket.class)) {
-            return new ArrayList<>(tickets.values());
+        } else if (clazz.equals(TicketImpl.class)) {
+            TicketRepository ticketRepository = new TicketRepository();
+            List<Ticket> tickets = ticketRepository.getAllTickets();
+            return tickets;
         } else {
             throw new IllegalArgumentException("Unsupported class type for retrieving data");
         }

@@ -1,5 +1,7 @@
 package com.epam.springmvc.facade;
 
+import com.epam.springmvc.util.PdfGenerator;
+import com.itextpdf.text.DocumentException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.epam.springmvc.model.Event;
@@ -10,6 +12,8 @@ import com.epam.springmvc.service.implementation.EventServiceImpl;
 import com.epam.springmvc.service.implementation.TicketServiceImpl;
 import com.epam.springmvc.service.implementation.UserServiceImpl;
 
+import javax.transaction.Transactional;
+import java.io.ByteArrayInputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +24,24 @@ public class BookingFacadeImpl implements BookingFacade {
     private final UserServiceImpl userService;
     private final EventServiceImpl eventService;
     private final TicketServiceImpl ticketService;
+
+    @Override
+    @Transactional
+    public boolean preloadTickets() {
+        return ticketService.preloadTickets();
+    }
+
+    @Override
+    public ByteArrayInputStream generatePdfTicketsReport(Long userId) {
+        User user = userService.getUserById(userId);
+        List<Ticket> tickets = ticketService.getBookedTicketsByUser(user, 1, 1);
+        try {
+            byte[] pdfBytes = PdfGenerator.generatePdf(tickets);
+            return new ByteArrayInputStream(pdfBytes);
+        } catch (DocumentException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public Event getEventById(long eventId) {

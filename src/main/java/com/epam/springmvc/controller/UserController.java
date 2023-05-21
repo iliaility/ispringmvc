@@ -22,11 +22,6 @@ public class UserController {
         this.bookingFacade = bookingFacade;
     }
 
-    @GetMapping("/hello_user")
-    public String hi() {
-        return "hello_world";
-    }
-
     @GetMapping("/user/{userId}")
     public String getUsers(@PathVariable("userId") long userId, Model model) {
         List<User> users = List.of(bookingFacade.getUserById(userId));

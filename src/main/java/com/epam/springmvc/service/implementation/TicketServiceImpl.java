@@ -1,6 +1,7 @@
 package com.epam.springmvc.service.implementation;
 
 import com.epam.springmvc.dao.TicketDao;
+import com.epam.springmvc.util.TicketBatchLoader;
 import lombok.RequiredArgsConstructor;
 import com.epam.springmvc.model.Event;
 import com.epam.springmvc.model.Ticket;
@@ -17,7 +18,7 @@ public class TicketServiceImpl implements TicketService {
     private final TicketDao ticketDao;
 
     @Override
-    public Ticket bookTicket(long id,long userId, long eventId, int place, Ticket.Category category) {
+    public Ticket bookTicket(long id, long userId, long eventId, int place, Ticket.Category category) {
         return ticketDao.bookTicket(id, userId, eventId, place, category);
     }
 
@@ -34,5 +35,10 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public boolean cancelTicketById(long ticketId) {
         return ticketDao.cancelTicketById(ticketId);
+    }
+
+    public boolean preloadTickets() {
+        TicketBatchLoader ticketBatchLoader = new TicketBatchLoader(ticketDao);
+        return ticketBatchLoader.preloadTickets();
     }
 }

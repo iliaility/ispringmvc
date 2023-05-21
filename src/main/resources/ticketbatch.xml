@@ -1,0 +1,20 @@
+<tickets>
+    <ticket>
+        <userId>1</userId>
+        <eventId>1</eventId>
+        <place>1</place>
+        <category>PREMIUM</category>
+    </ticket>
+    <ticket>
+        <userId>2</userId>
+        <eventId>2</eventId>
+        <place>2</place>
+        <category>PREMIUM</category>
+    </ticket>
+    <ticket>
+        <userId>3</userId>
+        <eventId>3</eventId>
+        <place>3</place>
+        <category>PREMIUM</category>
+    </ticket>
+</tickets>

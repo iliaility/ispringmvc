@@ -1,6 +1,7 @@
 package com.epam.springmvc.dao.implementation;
 
 import com.epam.springmvc.dao.TicketDao;
+import com.epam.springmvc.exception.NotFoundException;
 import lombok.Setter;
 import com.epam.springmvc.model.Event;
 import com.epam.springmvc.model.Ticket;
@@ -8,13 +9,19 @@ import com.epam.springmvc.model.User;
 import com.epam.springmvc.model.implementation.TicketImpl;
 import com.epam.springmvc.storage.BookingStorage;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Setter
 public class TicketDaoImpl implements TicketDao {
+
     private BookingStorage bookingStorage;
+
+    private List<TicketImpl> getTicketsData() {
+        return (List<TicketImpl>) bookingStorage.getData(TicketImpl.class);
+    }
 
     @Override
     public Ticket bookTicket(long id, long userId, long eventId, int place, Ticket.Category category) {
@@ -33,24 +40,30 @@ public class TicketDaoImpl implements TicketDao {
 
     @Override
     public List<Ticket> getBookedTicketsByUser(User user, int pageSize, int pageNum) {
-        List<Ticket> userTickets = new ArrayList<>();
-        for (Ticket ticket : bookingStorage.getTickets().values()) {
-            if (ticket.getUserId() == user.getId()) {
-                userTickets.add(ticket);
-            }
+        List<Ticket> filteredTickets = getTicketsData().stream()
+                .filter(ticket -> Objects.equals(ticket.getUserId(), user.getId()))
+                .skip((pageNum - 1) * pageSize)
+                .limit(pageSize)
+                .collect(Collectors.toList());
+
+        if (filteredTickets.isEmpty()) {
+            throw new NotFoundException("No booked tickets found for the user");
         }
-        return userTickets;
+        return filteredTickets;
     }
 
     @Override
     public List<Ticket> getBookedTicketsByEvent(Event event, int pageSize, int pageNum) {
-        List<Ticket> eventTickets = new ArrayList<>();
-        for (Ticket ticket : bookingStorage.getTickets().values()) {
-            if (ticket.getEventId() == event.getId()) {
-                eventTickets.add(ticket);
-            }
+        List<Ticket> filteredTickets = getTicketsData().stream()
+                .filter(ticket -> Objects.equals(ticket.getUserId(), event.getId()))
+                .skip((pageNum - 1) * pageSize)
+                .limit(pageSize)
+                .collect(Collectors.toList());
+
+        if (filteredTickets.isEmpty()) {
+            throw new NotFoundException("No booked tickets found for the user");
         }
-        return eventTickets;
+        return filteredTickets;
     }
 
     @Override

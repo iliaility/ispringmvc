@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Tickets List</title>
+</head>
+<body>
+<h1>Tickets List</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Event id</th>
+        <th>User id</th>
+        <th>Place</th>
+        <th>Category</th>
+    </tr>
+
+    <tr th:each="ticket : ${tickets}">
+        <td th:text="${ticket.id}"></td>
+        <td th:text="${ticket.eventId}"></td>
+        <td th:text="${ticket.userId}"></td>
+        <td th:text="${ticket.place}"></td>
+        <td th:text="${ticket.category}"></td>
+    </tr>
+</table>
+</body>
+</html>
