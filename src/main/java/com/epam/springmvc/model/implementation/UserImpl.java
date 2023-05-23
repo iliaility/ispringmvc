@@ -11,7 +11,7 @@ public class UserImpl implements User {
     public UserImpl() {
     }
 
-    public UserImpl(long id,String name, String email) {
+    public UserImpl(long id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;

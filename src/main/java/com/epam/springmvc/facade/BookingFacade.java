@@ -5,6 +5,7 @@ import com.epam.springmvc.model.Ticket;
 import com.epam.springmvc.model.User;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public interface BookingFacade {
      * Populate tickets storage based on predefined file
      */
     boolean preloadTickets();
+    boolean preloadTickets2(InputStream inputStream);
 
     /**
      * Generate pdf tickets report for user

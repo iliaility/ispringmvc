@@ -11,9 +11,10 @@ import org.springframework.stereotype.Component;
 import com.epam.springmvc.service.implementation.EventServiceImpl;
 import com.epam.springmvc.service.implementation.TicketServiceImpl;
 import com.epam.springmvc.service.implementation.UserServiceImpl;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +30,11 @@ public class BookingFacadeImpl implements BookingFacade {
     @Transactional
     public boolean preloadTickets() {
         return ticketService.preloadTickets();
+    }
+
+    @Override
+    public boolean preloadTickets2(InputStream inputStream) {
+        return ticketService.preloadTickets2(inputStream);
     }
 
     @Override
@@ -69,7 +75,7 @@ public class BookingFacadeImpl implements BookingFacade {
 
     @Override
     public Event updateEvent(Event event) {
-        log.info("Event "+  event.toString() + " was updated successfully");
+        log.info("Event " + event.toString() + " was updated successfully");
         return eventService.updateEvent(event);
     }
 
@@ -116,7 +122,7 @@ public class BookingFacadeImpl implements BookingFacade {
     }
 
     @Override
-    public Ticket bookTicket(long id,long userId, long eventId, int place, Ticket.Category category) {
+    public Ticket bookTicket(long id, long userId, long eventId, int place, Ticket.Category category) {
         log.info("Book ticket: userId {}, eventId {}, place {}", userId, eventId, place);
         return ticketService.bookTicket(id, userId, eventId, place, category);
     }
@@ -136,6 +142,6 @@ public class BookingFacadeImpl implements BookingFacade {
     @Override
     public boolean cancelTicket(long ticketId) {
         log.info("Cancel ticket with id " + ticketId);
-       return ticketService.cancelTicketById(ticketId);
+        return ticketService.cancelTicketById(ticketId);
     }
 }
