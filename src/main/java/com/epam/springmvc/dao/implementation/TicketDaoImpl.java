@@ -19,6 +19,10 @@ public class TicketDaoImpl implements TicketDao {
 
     private BookingStorage bookingStorage;
 
+    public TicketDaoImpl(BookingStorage bookingStorage) {
+        this.bookingStorage = bookingStorage;
+    }
+
     private List<TicketImpl> getTicketsData() {
         return (List<TicketImpl>) bookingStorage.getData(TicketImpl.class);
     }
@@ -68,12 +72,11 @@ public class TicketDaoImpl implements TicketDao {
 
     @Override
     public boolean cancelTicketById(long ticketId) {
-        Map<Long, Ticket> tickets = bookingStorage.getTickets();
-        if (tickets.containsKey(ticketId)) {
-            tickets.remove(ticketId);
-            return true;
+        if(!bookingStorage.getTickets().containsKey(ticketId)){
+            throw new NotFoundException("Ticket not found");
         }
-        return false;
+        bookingStorage.getTickets().remove(ticketId);
+        return true;
     }
 
     public void setBookingStorage(BookingStorage bookingStorage) {

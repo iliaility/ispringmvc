@@ -3,9 +3,12 @@ package com.epam.springmvc.model.implementation;
 import com.epam.springmvc.model.Event;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class EventImpl implements Event {
     private long id;
+    private static Set<Long> uniqueIds = new HashSet<>();
     private String title;
     private Date date;
 
@@ -13,7 +16,6 @@ public class EventImpl implements Event {
     }
 
     public EventImpl( String title, Date date) {
-        this.id = id;
         this.title = title;
         this.date = date;
     }
@@ -25,7 +27,12 @@ public class EventImpl implements Event {
 
     @Override
     public void setId(long id) {
+        if (uniqueIds.contains(id)) {
+            throw new IllegalArgumentException("ID is already in use");
+        }
+        uniqueIds.remove(this.id);
         this.id = id;
+        uniqueIds.add(id);
     }
 
     @Override

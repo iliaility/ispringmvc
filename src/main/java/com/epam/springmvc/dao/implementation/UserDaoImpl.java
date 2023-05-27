@@ -18,6 +18,10 @@ import java.util.stream.Collectors;
 public class UserDaoImpl implements UserDao {
     private BookingStorage bookingStorage;
 
+    public UserDaoImpl(BookingStorage bookingStorage) {
+        this.bookingStorage = bookingStorage;
+    }
+
     private List<UserImpl> getUsersData() {
         return (List<UserImpl>) bookingStorage.getData(UserImpl.class);
     }
@@ -44,26 +48,20 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User update(User user) {
-        List<UserImpl> users = getUsersData();
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getId() == user.getId()) {
-                users.set(i, (UserImpl) user);
-                return user;
-            }
+        if (!bookingStorage.getUsers().containsKey(user.getId())){
+            throw new NotFoundException("User not found");
         }
-        throw new NotFoundException("User not found");
+        bookingStorage.getUsers().replace(user.getId(),user);
+        return user;
     }
 
     @Override
     public boolean deleteById(long id) {
-        List<UserImpl> users = getUsersData();
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getId() == id) {
-                users.remove(i);
-                return true;
-            }
+        if (!bookingStorage.getUsers().containsKey(id)){
+            throw new NotFoundException("User not found");
         }
-        throw new NotFoundException("User not found");
+        bookingStorage.getUsers().remove(id);
+        return true;
     }
 
     @Override

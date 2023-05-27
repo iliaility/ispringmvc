@@ -21,22 +21,22 @@ public class ApplicationConfig {
 
     @Bean
     public EventDaoImp eventDao() {
-        EventDaoImp eventDao = new EventDaoImp();
-        eventDao.setBookingStorage(bookingStorage);
+        EventDaoImp eventDao = new EventDaoImp(this.bookingStorage);
+        //eventDao.setBookingStorage(bookingStorage);
         return eventDao;
     }
 
     @Bean
     public TicketDaoImpl ticketDao() {
-        TicketDaoImpl ticketDao = new TicketDaoImpl();
-        ticketDao.setBookingStorage(bookingStorage);
+        TicketDaoImpl ticketDao = new TicketDaoImpl(this.bookingStorage);
+        //ticketDao.setBookingStorage(bookingStorage);
         return ticketDao;
     }
 
     @Bean
     public UserDaoImpl userDao() {
-        UserDaoImpl userDao = new UserDaoImpl();
-        userDao.setBookingStorage(bookingStorage);
+        UserDaoImpl userDao = new UserDaoImpl(this.bookingStorage);
+        //userDao.setBookingStorage(bookingStorage);
         return userDao;
     }
 

@@ -4,6 +4,7 @@ import com.epam.springmvc.facade.BookingFacade;
 
 import com.epam.springmvc.model.User;
 import com.epam.springmvc.model.implementation.UserImpl;
+import com.epam.springmvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,22 +18,20 @@ public class UserController {
 
     private final BookingFacade bookingFacade;
 
-    @Autowired
+   // @Autowired
     public UserController(BookingFacade bookingFacade) {
         this.bookingFacade = bookingFacade;
     }
 
     @GetMapping("/user/{userId}")
-    public String getUsers(@PathVariable("userId") long userId, Model model) {
-        List<User> users = List.of(bookingFacade.getUserById(userId));
-        model.addAttribute("users", users);
+    public String getUser(@PathVariable("userId") long userId, Model model) {
+        model.addAttribute("users", bookingFacade.getUserById(userId));
         return "users-list";
     }
 
     @GetMapping(path = "/email/{email}")
     public String getUserByEmail(@PathVariable("email") String email, Model model) {
-        List<User> users = bookingFacade.getUsersByEmail(email, 1, 1);
-        model.addAttribute("users", users);
+        model.addAttribute("users", bookingFacade.getUsersByEmail(email, 1, 1));
         return "users-list";
     }
 
@@ -43,22 +42,22 @@ public class UserController {
         return "users-list";
     }
 
-    @GetMapping("/create")
-    public String createUser(Model model) {
+    @GetMapping("/create/{name}/{email}")
+    public String createUser(Model model,@PathVariable("name") String name,@PathVariable("email") String email) {
         User user = new UserImpl();
-        user.setName("name");
-        user.setEmail("email");
+        user.setName(name);
+        user.setEmail(email);
         bookingFacade.createUser(user);
         model.addAttribute("users", user);
         return "users-list";
     }
 
-    @GetMapping("/update/{userId}")
-    public String updateUser(@PathVariable("userId") long userId, Model model) {
+    @GetMapping("/update/{userId}/{updatedName}/{updated-email}")
+    public String updateUser(@PathVariable("userId") long userId,@PathVariable("updatedName") String name,@PathVariable("updated-email") String email, Model model) {
         User user = bookingFacade.getUserById(userId);
         if (user != null) {
-            user.setName("updatedName");
-            user.setEmail("updated-email@gmail.com");
+            user.setName(name);
+            user.setEmail(email);
             bookingFacade.updateUser(user);
         }
         model.addAttribute("users", user);

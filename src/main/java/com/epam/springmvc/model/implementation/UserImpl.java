@@ -2,17 +2,22 @@ package com.epam.springmvc.model.implementation;
 
 import com.epam.springmvc.model.User;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class UserImpl implements User {
 
     private long id;
+    private static Set<Long> uniqueIds = new HashSet<>();
     private String name;
     private String email;
+    private static Set<String> uniqueEmails = new HashSet<>();
+
 
     public UserImpl() {
     }
 
-    public UserImpl(long id, String name, String email) {
-        this.id = id;
+    public UserImpl( String name, String email) {
         this.name = name;
         this.email = email;
     }
@@ -24,7 +29,12 @@ public class UserImpl implements User {
 
     @Override
     public void setId(long id) {
+        if (uniqueIds.contains(id)) {
+            throw new IllegalArgumentException("ID is already in use");
+        }
+        uniqueIds.remove(this.id);
         this.id = id;
+        uniqueIds.add(id);
     }
 
     @Override
@@ -44,7 +54,12 @@ public class UserImpl implements User {
 
     @Override
     public void setEmail(String email) {
+        if (uniqueEmails.contains(email)) {
+            throw new IllegalArgumentException("Email is already in use");
+        }
+        uniqueEmails.remove(this.email);
         this.email = email;
+        uniqueEmails.add(email);
     }
 
     @Override

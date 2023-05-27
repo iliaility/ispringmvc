@@ -2,9 +2,13 @@ package com.epam.springmvc.model.implementation;
 
 import com.epam.springmvc.model.Ticket;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class TicketImpl implements Ticket {
 
     private long id;
+    private static Set<Long> uniqueIds = new HashSet<>();
     private long userId;
     private long eventId;
     private int place;
@@ -27,7 +31,12 @@ public class TicketImpl implements Ticket {
 
     @Override
     public void setId(long id) {
+        if (uniqueIds.contains(id)) {
+            throw new IllegalArgumentException("ID is already in use");
+        }
+        uniqueIds.remove(this.id);
         this.id = id;
+        uniqueIds.add(id);
     }
 
     @Override

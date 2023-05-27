@@ -18,6 +18,10 @@ public class EventDaoImp implements EventDao {
 
     private BookingStorage bookingStorage;
 
+    public EventDaoImp(BookingStorage bookingStorage) {
+        this.bookingStorage = bookingStorage;
+    }
+
     private List<EventImpl> getEventsData() {
         return (List<EventImpl>) bookingStorage.getData(EventImpl.class);
     }
@@ -44,26 +48,20 @@ public class EventDaoImp implements EventDao {
 
     @Override
     public Event update(Event event) {
-        List<EventImpl> events = getEventsData();
-        for (int i = 0; i < events.size(); i++) {
-            if (events.get(i).getId() == event.getId()) {
-                events.set(i, (EventImpl) event);
-                return event;
-            }
+        if (!bookingStorage.getUsers().containsKey(event.getId())){
+            throw new NotFoundException("Event not found");
         }
-        throw new NotFoundException("Event not found");
+        bookingStorage.getEvents().replace(event.getId(),event);
+        return event;
     }
 
     @Override
     public boolean deleteById(long id) {
-        List<EventImpl> events = getEventsData();
-        for (int i = 0; i < events.size(); i++) {
-            if (events.get(i).getId() == id) {
-                events.remove(i);
-                return true;
-            }
+        if (!bookingStorage.getUsers().containsKey(id)){
+            throw new NotFoundException("Event not found");
         }
-        throw new NotFoundException("User not found");
+        bookingStorage.getEvents().remove(id);
+        return true;
     }
 
     public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {
